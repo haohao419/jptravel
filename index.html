@@ -9,71 +9,122 @@
     <title>2026東京豪神遊</title>
     <style>
       /* CSS 樣式區塊 */
+      :root {
+        --primary-bg: #f8f9fa;
+        --border-color: #e2e8f0;
+        --text-main: #334155;
+        --text-muted: #64748b;
+      }
+
+      body {
+        background-color: #f1f5f9; /* 外圍加上微灰底色，讓白色卡片更立體 */
+        margin: 0;
+        padding: 20px 10px;
+      }
+
       .itinerary-container {
         font-family:
           "Helvetica Neue", Helvetica, Arial, "微軟正黑體", sans-serif;
-        max-width: 900px;
+        max-width: 800px;
         margin: 0 auto;
         background: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         overflow: hidden;
       }
 
       .itinerary-header {
-        background: #333;
+        background: #1e293b;
         color: #fff;
         padding: 20px;
         text-align: center;
         margin: 0;
-        font-size: 24px;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      /* 微調：更寬的容器與更清爽的標題 */
+      @media (min-width: 900px) {
+        .itinerary-container {
+          max-width: 920px;
+        }
+        .itinerary-header {
+          font-size: 24px;
+          padding: 24px;
+        }
       }
 
       .tabs {
+        box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+      }
+
+      .timeline-card {
+        padding: 0;
+      }
+
+      .card-summary {
+        gap: 10px;
+        align-items: center;
+      }
+
+      .card-title {
+        font-size: 15px;
+      }
+
+      .card-toggle-icon {
+        font-weight: 700;
+      }
+
+      /* 頁籤按鈕區塊 - RWD優化 (可橫向滑動) */
+      .tabs {
         display: flex;
-        background: #f8f9fa;
-        border-bottom: 2px solid #dee2e6;
+        background: var(--primary-bg);
+        border-bottom: 2px solid var(--border-color);
+        overflow-x: auto;
+        white-space: nowrap;
       }
 
       .tab-btn {
         flex: 1;
-        padding: 15px 10px;
+        padding: 15px 12px;
         cursor: pointer;
         border: none;
         background: none;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: bold;
-        color: #495057;
+        color: var(--text-muted);
         transition: all 0.3s ease;
         outline: none;
+        min-width: 80px; /* 確保手機上按鈕不會縮太小 */
       }
 
       .tab-btn:hover {
         background-color: #e9ecef;
       }
 
-      /* 根據圖片中的顏色設定 Tab 提示色 */
       .tab-btn.active.day1 {
         border-bottom: 4px solid #f4d03f;
-        color: #000;
-      } /* 黃色 */
+        color: #1e293b;
+      }
       .tab-btn.active.day2 {
         border-bottom: 4px solid #2ecc71;
-        color: #000;
-      } /* 綠色 */
+        color: #1e293b;
+      }
       .tab-btn.active.day3 {
         border-bottom: 4px solid #00ffff;
-        color: #000;
-      } /* 青藍色 */
+        color: #1e293b;
+      }
       .tab-btn.active.day4 {
         border-bottom: 4px solid #e74c3c;
-        color: #000;
-      } /* 紅色 */
+        color: #1e293b;
+      }
 
       .tab-content {
         display: none;
-        padding: 20px;
-        animation: fadeIn 0.5s;
+        padding: 20px 15px;
+        animation: fadeIn 0.4s ease-out;
+        background-color: #ffffff;
       }
 
       .tab-content.active {
@@ -83,262 +134,611 @@
       @keyframes fadeIn {
         from {
           opacity: 0;
+          transform: translateY(5px);
         }
         to {
           opacity: 1;
+          transform: translateY(0);
         }
       }
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
+      /* 條列式卡片設計 */
+      .timeline-card {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        background: #fff;
+        transition: box-shadow 0.2s;
       }
 
-      th,
-      td {
-        border: 1px solid #dee2e6;
-        padding: 12px 15px;
-        text-align: left;
+      .timeline-card:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       }
 
-      th {
-        background-color: #f8f9fa;
+      /* 卡片摘要 (永遠顯示的部分) */
+      .card-summary {
+        padding: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+      }
+
+      .card-time {
+        font-weight: 700;
+        color: #0f172a;
+        min-width: 95px; /* 確保時間欄位寬度一致 */
+        margin-right: 15px;
+        font-size: 15px;
+        padding-top: 2px;
+      }
+
+      .card-info {
+        flex: 1;
+        padding-right: 20px; /* 留空間給箭頭 */
+      }
+
+      .card-title {
+        font-size: 16px;
         font-weight: bold;
-        color: #495057;
+        color: var(--text-main);
+        margin-bottom: 4px;
+        line-height: 1.4;
       }
 
-      /* 欄位寬度設定 */
-      .col-time {
-        width: 20%;
-      }
-      .col-event {
-        width: 45%;
-      }
-      .col-remark {
-        width: 35%;
+      .card-remark {
+        font-size: 13px;
+        color: #2563eb; /* 使用藍色突顯 Remark */
+        display: inline-block;
+        background: #eff6ff;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-top: 4px;
       }
 
-      /* 手機版優化 */
-      @media screen and (max-width: 600px) {
-        .tab-btn {
-          font-size: 14px;
-          padding: 10px 5px;
+      /* 隱藏空 Remark 的背景 */
+      .card-remark:empty {
+        display: none;
+      }
+
+      .card-toggle-icon {
+        position: absolute;
+        right: 15px;
+        top: 18px;
+        color: #94a3b8;
+        font-size: 12px;
+        transition: transform 0.3s ease;
+      }
+
+      /* 卡片展開狀態 */
+      .timeline-card.open .card-summary {
+        background-color: #fafbfc;
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 8px 8px 0 0;
+      }
+
+      .timeline-card.open .card-toggle-icon {
+        transform: rotate(180deg);
+        color: #334155;
+      }
+
+      /* 卡片詳細內容 (下拉區塊) - 使用 max-height 做展開動畫 */
+      .card-detail {
+        max-height: 0; /* 預設收合 */
+        overflow: hidden;
+        padding: 0 15px; /* 收合時垂直 padding 為 0，展開時用動畫過渡 */
+        background-color: #fafbfc;
+        border-radius: 0 0 8px 8px;
+        transition:
+          max-height 0.35s ease,
+          padding 0.25s ease;
+      }
+
+      .timeline-card.open .card-detail {
+        max-height: 1000px; /* 足夠容納內容，避免精準計算高度 */
+        padding: 15px;
+      }
+
+      .detail-content {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      /* 圖片格線 */
+      .img-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .img-grid img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 8px;
+        display: block;
+      }
+
+      @media screen and (max-width: 640px) {
+        .img-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-          display: block;
+      }
+
+      /* 單張圖片（非格線）完整顯示，避免被裁切 */
+      .detail-content img.zoomable {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: contain;
+        border-radius: 8px;
+        margin-top: 12px;
+      }
+
+      /* Lightbox 圖片預覽 */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+
+      .lightbox.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .lightbox-img {
+        max-width: 92%;
+        max-height: 92%;
+        border-radius: 10px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        display: block;
+      }
+
+      .lightbox-close {
+        position: fixed;
+        top: 20px;
+        right: 24px;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 32px;
+        cursor: pointer;
+        z-index: 10000;
+      }
+
+      /* 手機 RWD 極致優化 */
+      @media screen and (max-width: 480px) {
+        .card-summary {
+          flex-direction: column; /* 螢幕極小時，時間與標題上下排列 */
         }
-        th {
-          display: none;
+        .card-time {
+          margin-bottom: 6px;
+          color: #3b82f6; /* 時間改用藍色突顯 */
         }
-        td {
-          position: relative;
-          padding-left: 30%;
-          border-bottom: none;
+        .card-toggle-icon {
+          top: 15px;
         }
-        td:last-child {
-          border-bottom: 1px solid #dee2e6;
-          margin-bottom: 15px;
-        }
-        td::before {
-          content: attr(data-label);
-          position: absolute;
-          left: 15px;
-          width: 25%;
-          font-weight: bold;
-          white-space: nowrap;
-        }
+      }
+
+      /* --- 額外動畫效果 --- */
+      /* 全域平滑過渡（切換主題或顏色時） */
+      body,
+      .itinerary-container,
+      .itinerary-header,
+      .tab-btn,
+      .timeline-card,
+      .detail-content {
+        transition:
+          background-color 0.32s ease,
+          color 0.32s ease,
+          box-shadow 0.32s ease,
+          border-color 0.32s ease;
+      }
+
+      /* 卡片懸浮與入場 */
+      .timeline-card {
+        transform: translateY(0);
+      }
+      .timeline-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
+      }
+
+      /* 詳細內容淡入（在 .timeline-card.open 時觸發） */
+      .detail-content {
+        opacity: 0;
+        transform: translateY(6px);
+        transition:
+          opacity 0.28s ease,
+          transform 0.28s ease;
+      }
+      .timeline-card.open .detail-content {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* 圖片輕微放大效果 */
+      .img-grid img,
+      .detail-content img.zoomable {
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .img-grid img:hover,
+      .detail-content img.zoomable:hover {
+        transform: scale(1.03);
+        box-shadow: 0 12px 32px rgba(2, 6, 23, 0.08);
+      }
+
+      /* 主題切換淡入（若使用 .dark-mode） */
+      .dark-mode .itinerary-container,
+      .dark-mode body {
+        transition:
+          background-color 0.35s ease,
+          color 0.35s ease;
       }
     </style>
   </head>
   <body>
     <div class="itinerary-container">
-      <h2 class="itinerary-header">東京四日遊行程表</h2>
+      <h2 class="itinerary-header">2026東京豪神遊 ✈️</h2>
 
-      <!-- 頁籤按鈕區塊 -->
       <div class="tabs">
         <button class="tab-btn day1 active" onclick="openDay(event, 'day1')">
-          6/17 (四)
+          6/17 (三)
         </button>
         <button class="tab-btn day2" onclick="openDay(event, 'day2')">
-          6/18 (五)
+          6/18 (四)
         </button>
         <button class="tab-btn day3" onclick="openDay(event, 'day3')">
-          6/19 (六)
+          6/19 (五)
         </button>
         <button class="tab-btn day4" onclick="openDay(event, 'day4')">
-          6/20 (日)
+          6/20 (六)
         </button>
       </div>
 
-      <!-- Day 1 行程 -->
       <div id="day1" class="tab-content active">
-        <table>
-          <thead>
-            <tr>
-              <th class="col-time">時間</th>
-              <th class="col-event">行程</th>
-              <th class="col-remark">Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="時間">7:30~9:00</td>
-              <td data-label="行程">自行前前往桃機T1</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">9:00~10:40</td>
-              <td data-label="行程">航廈報到 (樂桃航空MM626)</td>
-              <td data-label="Remark">個人行李7公斤/托運20公斤</td>
-            </tr>
-            <tr>
-              <td data-label="時間">10:50~15:30</td>
-              <td data-label="行程">起駕日本東京成田機場</td>
-              <td data-label="Remark">機上口爆</td>
-            </tr>
-            <tr>
-              <td data-label="時間">15:30~16:00</td>
-              <td data-label="行程">入境安檢/檢疫</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">16:00~17:00</td>
-              <td data-label="行程">飯店放行李(遠東村飯店東京-淺草)</td>
-              <td data-label="Remark">搭乘skyliner轉橘色銀座線</td>
-            </tr>
-            <tr>
-              <td data-label="時間">17:00~18:00</td>
-              <td data-label="行程">前往吃晚餐</td>
-              <td data-label="Remark">搭車約30分</td>
-            </tr>
-            <tr>
-              <td data-label="時間">18:00~20:30</td>
-              <td data-label="行程">敘敘苑銀座三越店</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">20:30~21:30</td>
-              <td data-label="行程">鬼混</td>
-              <td data-label="Remark">Uniqlo/GU 百貨商場</td>
-            </tr>
-            <tr>
-              <td data-label="時間">22:00~</td>
-              <td data-label="行程">飯店休息</td>
-              <td data-label="Remark">賦歸 (王已歸)</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">7:30~9:00</div>
+            <div class="card-info">
+              <div class="card-title">自行前前往桃機T1</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">晟:高鐵 豪:家人載</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">9:00~10:40</div>
+            <div class="card-info">
+              <div class="card-title">航廈報到 (樂桃航空MM626)</div>
+              <div class="card-remark">個人行李7公斤/托運20公斤</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">
+              （預留詳細說明區塊：報到櫃台、護照準備等...）
+              <img class="zoomable" src="./img1.png" alt="img1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">10:50~15:30</div>
+            <div class="card-info">
+              <div class="card-title">起駕日本東京成田機場</div>
+              <div class="card-remark">機上口爆</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">飛機上睡搞搞</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">15:30~16:00</div>
+            <div class="card-info">
+              <div class="card-title">入境安檢/檢疫</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">
+              啟用esim
+              <div class="img-grid">
+                <img class="zoomable" src="./vjw1.jpg" alt="vjw1" />
+                <img class="zoomable" src="./vjw2.jpg" alt="vjw2" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">16:00~17:00</div>
+            <div class="card-info">
+              <div class="card-title">飯店放行李</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">飯店名稱:遠東村飯店東京-淺草</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">17:00~18:00</div>
+            <div class="card-info">
+              <div class="card-title">前往吃晚餐</div>
+              <div class="card-remark">
+                搭乘skyliner轉橘色銀座線 / 搭車約30分
+              </div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">18:00~20:30</div>
+            <div class="card-info">
+              <div class="card-title">敘敘苑銀座三越店</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">晟訂:18.00 豪訂:18.30</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">20:30~21:30</div>
+            <div class="card-info">
+              <div class="card-title">鬼混</div>
+              <div class="card-remark">Uniqlo/GU 百貨商場</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">
+              （預留詳細說明區塊：購物清單等...）
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">22:00~</div>
+            <div class="card-info">
+              <div class="card-title">飯店休息</div>
+              <div class="card-remark">賦歸 (王已歸)</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Day 2 行程 -->
       <div id="day2" class="tab-content">
-        <table>
-          <thead>
-            <tr>
-              <th class="col-time">時間</th>
-              <th class="col-event">行程</th>
-              <th class="col-remark">Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="時間">7:00~8:00</td>
-              <td data-label="行程">前往東京車站丸之內北口 (JR)</td>
-              <td data-label="Remark">約半小時</td>
-            </tr>
-            <tr>
-              <td data-label="時間">8:00~18:00</td>
-              <td data-label="行程">富士山一日遊</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">18:00~20:00</td>
-              <td data-label="行程">晚餐</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">20:00~</td>
-              <td data-label="行程">飯店休息</td>
-              <td data-label="Remark"></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">7:00~8:00</div>
+            <div class="card-info">
+              <div class="card-title">前往東京車站丸之內北口 (JR)</div>
+              <div class="card-remark">約半小時</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">8:00~18:00</div>
+            <div class="card-info">
+              <div class="card-title">富士山一日遊</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">
+              （預留詳細說明區塊：景點清單等...）
+              <div class="img-grid">
+                <img class="zoomable" src="./img2.png" alt="img2" />
+                <img class="zoomable" src="./img3.png" alt="img3" />
+                <img class="zoomable" src="./img4.png" alt="img4" />
+                <img class="zoomable" src="./img5.png" alt="img5" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">18:00~20:00</div>
+            <div class="card-info">
+              <div class="card-title">晚餐</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">20:00~</div>
+            <div class="card-info">
+              <div class="card-title">飯店休息</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Day 3 行程 -->
       <div id="day3" class="tab-content">
-        <table>
-          <thead>
-            <tr>
-              <th class="col-time">時間</th>
-              <th class="col-event">行程</th>
-              <th class="col-remark">Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="時間">9:00~12:00</td>
-              <td data-label="行程">晴空塔</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">12:00~13:30</td>
-              <td data-label="行程">午餐</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">13:30~18:00</td>
-              <td data-label="行程">下午行程</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">18:00~21:00</td>
-              <td data-label="行程">棒球比賽</td>
-              <td data-label="Remark"></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">9:00~12:00</div>
+            <div class="card-info">
+              <div class="card-title">淺草，逛雷門、淺草寺</div>
+              <div class="card-remark">仲見世通或周邊吃炸牛排、大福</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">12:00~14:00</div>
+            <div class="card-info">
+              <div class="card-title">隅田川步道/東京水岸街道(mizumachi)</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">14:00~16:00</div>
+            <div class="card-info">
+              <div class="card-title">前往晴空塔</div>
+              <div class="card-remark">吉卜力/寶可夢/卡通專賣店</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">16:00~17:30</div>
+            <div class="card-info">
+              <div class="card-title">前往棒球場＋買晚餐</div>
+              <div class="card-remark">坐車約30分鐘</div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">地點東京巨蛋</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">18:00~21:00</div>
+            <div class="card-info">
+              <div class="card-title">棒球比賽</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">讀賣巨人vs中日龍 票卷在apple pay</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Day 4 行程 -->
       <div id="day4" class="tab-content">
-        <table>
-          <thead>
-            <tr>
-              <th class="col-time">時間</th>
-              <th class="col-event">行程</th>
-              <th class="col-remark">Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="時間">9:00~12:00</td>
-              <td data-label="行程">築地市場</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">12:00~15:00</td>
-              <td data-label="行程">購物</td>
-              <td data-label="Remark"></td>
-            </tr>
-            <tr>
-              <td data-label="時間">15:00~</td>
-              <td data-label="行程">前往機場</td>
-              <td data-label="Remark"></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">9:00~12:00</div>
+            <div class="card-info">
+              <div class="card-title">築地市場</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">12:00~15:00</div>
+            <div class="card-info">
+              <div class="card-title">購物</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="card-summary" onclick="toggleCard(this)">
+            <div class="card-time">15:00~</div>
+            <div class="card-info">
+              <div class="card-title">前往機場</div>
+              <div class="card-remark"></div>
+            </div>
+            <div class="card-toggle-icon">▼</div>
+          </div>
+          <div class="card-detail">
+            <div class="detail-content">（預留詳細說明區塊）</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- JavaScript 區塊 -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+      <button class="lightbox-close" aria-label="Close">×</button>
+      <img class="lightbox-img" src="" alt="" />
+    </div>
+
     <script>
+      // 頁籤切換功能
       function openDay(evt, dayId) {
         // 隱藏所有 tab-content
         let tabContents = document.getElementsByClassName("tab-content");
@@ -355,9 +755,105 @@
 
         // 顯示被點擊的行程並加上 active 狀態
         document.getElementById(dayId).style.display = "block";
-        document.getElementById(dayId).classList.add("active");
+        // 使用 setTimeout 確保 display: block 渲染後才加上 active 觸發動畫
+        setTimeout(() => {
+          document.getElementById(dayId).classList.add("active");
+        }, 10);
         evt.currentTarget.classList.add("active");
       }
+
+      // 關閉所有已開啟的卡片（僅移除類別，外觀由 CSS 控制）
+      function closeAllCards() {
+        let openCards = document.querySelectorAll(".timeline-card.open");
+        openCards.forEach((openCard) => openCard.classList.remove("open"));
+      }
+
+      // 卡片下拉說明展開/收合功能
+      function toggleCard(summaryElement) {
+        // 找到包裹 summary 的外層卡片 (.timeline-card)
+        let card = summaryElement.parentElement;
+        // 找到同層的 detail 區塊 (.card-detail)
+        let detail = card.querySelector(".card-detail");
+
+        // 自動關閉其他已開啟的卡片（保留目前卡片）
+        let openCards = document.querySelectorAll(".timeline-card.open");
+        openCards.forEach((openCard) => {
+          if (openCard !== card) openCard.classList.remove("open");
+        });
+
+        // 切換目前卡片展開類別，CSS 負責動畫與顯示
+        card.classList.toggle("open");
+      }
+
+      // 點擊外部區域時自動關閉行程卡片
+      document.addEventListener("click", function (event) {
+        if (!event.target.closest(".timeline-card")) {
+          closeAllCards();
+        }
+      });
+
+      // 防止點擊卡片內部冒泡導致關閉（包含 summary 與 detail）
+      document.querySelectorAll(".card-summary, .card-detail").forEach((el) => {
+        el.addEventListener("click", function (event) {
+          event.stopPropagation();
+        });
+      });
+
+      // Lightbox: 點擊圖片放大預覽
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = lightbox.querySelector(".lightbox-img");
+
+      function openLightbox(src, alt) {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || "";
+        lightbox.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        document.body.style.overflow = "";
+        setTimeout(() => {
+          lightboxImg.src = "";
+        }, 200);
+      }
+
+      // 綁定縮圖
+      document.querySelectorAll(".zoomable").forEach((img) => {
+        img.style.cursor = "zoom-in";
+        img.addEventListener("click", function (e) {
+          openLightbox(img.src, img.alt);
+          e.stopPropagation();
+        });
+      });
+
+      // 點擊背景或關閉按鈕關閉（阻止事件冒泡，避免觸發 document 的外部點擊處理）
+      lightbox.addEventListener("click", function (e) {
+        if (
+          e.target === lightbox ||
+          e.target.classList.contains("lightbox-close")
+        ) {
+          e.stopPropagation();
+          closeLightbox();
+        }
+      });
+
+      // 另外保險：關閉按鈕的 click 也阻止冒泡
+      const lightboxCloseBtn = lightbox.querySelector(".lightbox-close");
+      if (lightboxCloseBtn) {
+        lightboxCloseBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          closeLightbox();
+        });
+      }
+
+      // Esc 鍵關閉
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && lightbox.classList.contains("open")) {
+          e.stopPropagation();
+          closeLightbox();
+        }
+      });
     </script>
   </body>
 </html>
