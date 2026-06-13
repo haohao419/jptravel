@@ -7,124 +7,131 @@
     <link rel="apple-touch-icon" href="./icon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="./icon.png" />
     <title>2026東京豪神遊</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    
     <style>
-      /* CSS 樣式區塊 */
       :root {
-        --primary-bg: #f8f9fa;
-        --border-color: #e2e8f0;
-        --text-main: #334155;
-        --text-muted: #64748b;
+        /* 色彩計畫 - 日系極簡 / Apple / Google 質感 */
+        --bg-body: #F5F5F7;        /* 淺灰背景 */
+        --bg-card: #FFFFFF;        /* 純白卡片 */
+        --text-main: #1D1D1F;      /* 深灰主文字 */
+        --text-muted: #86868B;     /* 次要文字 */
+        --tokyo-red: #E50012;      /* 東京紅 (強調色) */
+        --border-light: #E5E5EA;   /* 極淡邊框 */
+        --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.04);
+        --shadow-hover: 0 10px 32px rgba(0, 0, 0, 0.08);
+        --radius-card: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       body {
-        background-color: #f1f5f9; /* 外圍加上微灰底色，讓白色卡片更立體 */
+        background-color: var(--bg-body);
         margin: 0;
-        padding: 20px 10px;
+        padding: 20px 16px;
+        font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text-main);
+        -webkit-font-smoothing: antialiased;
       }
 
+      /* 主容器 */
       .itinerary-container {
-        font-family:
-          "Helvetica Neue", Helvetica, Arial, "微軟正黑體", sans-serif;
         max-width: 800px;
-        margin: 0 auto;
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        margin: 0 auto 40px auto;
+        background: var(--bg-card);
+        border-radius: 24px;
+        box-shadow: var(--shadow-soft);
         overflow: hidden;
       }
 
+      /* 頂部標題 */
       .itinerary-header {
-        background: #1e293b;
-        color: #fff;
-        padding: 20px;
+        background: var(--bg-card);
+        color: var(--text-main);
+        padding: 32px 20px 20px;
         text-align: center;
         margin: 0;
-        font-size: 22px;
-        font-weight: bold;
-        letter-spacing: 1px;
-      }
-
-      /* 微調：更寬的容器與更清爽的標題 */
-      @media (min-width: 900px) {
-        .itinerary-container {
-          max-width: 920px;
-        }
-        .itinerary-header {
-          font-size: 24px;
-          padding: 24px;
-        }
-      }
-
-      .tabs {
-        box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-      }
-
-      .timeline-card {
-        padding: 0;
-      }
-
-      .card-summary {
-        gap: 10px;
-        align-items: center;
-      }
-
-      .card-title {
-        font-size: 15px;
-      }
-
-      .card-toggle-icon {
+        font-size: 24px;
         font-weight: 700;
+        letter-spacing: 1px;
+        border-bottom: 1px solid var(--border-light);
+      }
+      
+      .itinerary-header span.material-symbols-outlined {
+        color: var(--tokyo-red);
+        vertical-align: middle;
+        margin-left: 8px;
+        font-size: 28px;
       }
 
-      /* 頁籤按鈕區塊 - RWD優化 (可橫向滑動) */
+      /* 頁籤設計 - 乾淨留白 */
       .tabs {
         display: flex;
-        background: var(--primary-bg);
-        border-bottom: 2px solid var(--border-color);
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border-light);
         overflow-x: auto;
         white-space: nowrap;
+        scrollbar-width: none; /* Firefox */
+      }
+      .tabs::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
       }
 
       .tab-btn {
         flex: 1;
-        padding: 15px 12px;
+        padding: 16px 12px;
         cursor: pointer;
         border: none;
-        background: none;
+        background: transparent;
         font-size: 15px;
-        font-weight: bold;
+        font-weight: 500;
         color: var(--text-muted);
         transition: all 0.3s ease;
         outline: none;
-        min-width: 80px; /* 確保手機上按鈕不會縮太小 */
+        min-width: 85px;
+        position: relative;
+        font-family: inherit;
       }
 
       .tab-btn:hover {
-        background-color: #e9ecef;
+        color: var(--text-main);
       }
 
-      .tab-btn.active.day1 {
-        border-bottom: 4px solid #f4d03f;
-        color: #1e293b;
-      }
-      .tab-btn.active.day2 {
-        border-bottom: 4px solid #2ecc71;
-        color: #1e293b;
-      }
-      .tab-btn.active.day3 {
-        border-bottom: 4px solid #00ffff;
-        color: #1e293b;
-      }
-      .tab-btn.active.day4 {
-        border-bottom: 4px solid #e74c3c;
-        color: #1e293b;
+      .tab-btn.active {
+        color: var(--tokyo-red);
+        font-weight: 700;
       }
 
+      /* 頁籤底部紅色滑動條 */
+      .tab-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 3px;
+        background-color: var(--tokyo-red);
+        border-radius: 3px 3px 0 0;
+        transition: width 0.3s ease;
+      }
+
+      .tab-btn.active::after {
+        width: 40px;
+      }
+
+      /* 行程內容區塊與時間軸 (Timeline) */
       .tab-content {
         display: none;
-        padding: 20px 15px;
+        padding: 32px 24px;
+        background-color: var(--bg-body); /* 內部使用灰色背景讓白卡片浮現 */
         animation: fadeIn 0.4s ease-out;
-        background-color: #ffffff;
+        position: relative;
       }
 
       .tab-content.active {
@@ -132,32 +139,73 @@
       }
 
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(5px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
-      /* 條列式卡片設計 */
+      /* 時間軸垂直線 */
+      .tab-content::before {
+        content: '';
+        position: absolute;
+        top: 40px;
+        bottom: 40px;
+        left: 36px;
+        width: 2px;
+        background-color: var(--border-light);
+        z-index: 0;
+      }
+
+      @media screen and (max-width: 640px) {
+        .tab-content { padding: 24px 16px; }
+        .tab-content::before { left: 24px; }
+      }
+
+      /* 卡片主體 */
       .timeline-card {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        margin-bottom: 12px;
-        background: #fff;
-        transition: box-shadow 0.2s;
+        background: var(--bg-card);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 20px;
+        margin-left: 40px;
+        position: relative;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        z-index: 1;
+        border: 1px solid rgba(0,0,0,0.02);
       }
 
       .timeline-card:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
       }
 
-      /* 卡片摘要 (永遠顯示的部分) */
+      /* 時間軸節點 (圓點) */
+      .timeline-card::before {
+        content: '';
+        position: absolute;
+        left: -46px;
+        top: 24px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: var(--bg-card);
+        border: 3px solid var(--border-light);
+        z-index: 2;
+        transition: border-color 0.3s ease;
+      }
+
+      .timeline-card:hover::before,
+      .timeline-card.open::before {
+        border-color: var(--tokyo-red);
+      }
+
+      @media screen and (max-width: 640px) {
+        .timeline-card { margin-left: 30px; }
+        .timeline-card::before { left: -34px; top: 22px; width: 12px; height: 12px; border-width: 2px;}
+      }
+
+      /* 摘要區域 (永遠顯示) */
       .card-summary {
-        padding: 15px;
+        padding: 20px;
         cursor: pointer;
         display: flex;
         align-items: flex-start;
@@ -166,118 +214,169 @@
 
       .card-time {
         font-weight: 700;
-        color: #0f172a;
-        min-width: 95px; /* 確保時間欄位寬度一致 */
-        margin-right: 15px;
+        color: var(--tokyo-red);
+        min-width: 90px;
+        margin-right: 16px;
         font-size: 15px;
         padding-top: 2px;
       }
 
       .card-info {
         flex: 1;
-        padding-right: 20px; /* 留空間給箭頭 */
+        padding-right: 30px;
       }
 
       .card-title {
-        font-size: 16px;
-        font-weight: bold;
+        font-size: 17px;
+        font-weight: 700;
         color: var(--text-main);
-        margin-bottom: 4px;
+        margin-bottom: 6px;
         line-height: 1.4;
       }
 
-      .card-remark {
-        font-size: 13px;
-        color: #2563eb; /* 使用藍色突顯 Remark */
-        display: inline-block;
-        background: #eff6ff;
-        padding: 2px 8px;
-        border-radius: 4px;
+      .card-remark-badge {
+        font-size: 12px;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        background: #F2F2F7;
+        padding: 4px 10px;
+        border-radius: 12px;
         margin-top: 4px;
+        font-weight: 500;
       }
 
-      /* 隱藏空 Remark 的背景 */
-      .card-remark:empty {
+      .card-remark-badge:empty {
         display: none;
       }
 
       .card-toggle-icon {
         position: absolute;
-        right: 15px;
-        top: 18px;
-        color: #94a3b8;
-        font-size: 12px;
+        right: 20px;
+        top: 22px;
+        color: var(--text-muted);
         transition: transform 0.3s ease;
-      }
-
-      /* 卡片展開狀態 */
-      .timeline-card.open .card-summary {
-        background-color: #fafbfc;
-        border-bottom: 1px solid var(--border-color);
-        border-radius: 8px 8px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .timeline-card.open .card-toggle-icon {
         transform: rotate(180deg);
-        color: #334155;
+        color: var(--tokyo-red);
       }
 
-      /* 卡片詳細內容 (下拉區塊) - 使用 max-height 做展開動畫 */
+      /* 詳細內容區塊 (下拉) */
       .card-detail {
-        max-height: 0; /* 預設收合 */
+        max-height: 0;
         overflow: hidden;
-        padding: 0 15px; /* 收合時垂直 padding 為 0，展開時用動畫過渡 */
-        background-color: #fafbfc;
-        border-radius: 0 0 8px 8px;
-        transition:
-          max-height 0.35s ease,
-          padding 0.25s ease;
+        padding: 0 20px;
+        background-color: #FAFAFC;
+        border-radius: 0 0 var(--radius-card) var(--radius-card);
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
+        border-top: 1px solid transparent;
       }
 
       .timeline-card.open .card-detail {
-        max-height: 1000px; /* 足夠容納內容，避免精準計算高度 */
-        padding: 15px;
+        max-height: 2000px;
+        padding: 20px;
+        border-top-color: var(--border-light);
       }
 
       .detail-content {
-        font-size: 14px;
-        color: var(--text-muted);
+        font-size: 15px;
+        color: var(--text-main);
         line-height: 1.6;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
       }
 
-      /* 圖片格線 */
+      .timeline-card.open .detail-content {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* 結構化的資訊網格 (日期/地區/時間/交通等) */
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px 20px;
+        margin-bottom: 16px;
+        background: var(--bg-card);
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border-light);
+      }
+
+      .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 14px;
+      }
+
+      .info-item .material-symbols-outlined {
+        font-size: 18px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+
+      .info-label {
+        color: var(--text-muted);
+        margin-right: 4px;
+      }
+
+      .info-value {
+        color: var(--text-main);
+        font-weight: 500;
+        flex: 1;
+      }
+
+      /* 補充內容與圖片區 */
+      .extra-notes {
+        color: var(--text-muted);
+        margin-bottom: 12px;
+      }
+
       .img-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-top: 12px;
+        gap: 10px;
+        margin-top: 16px;
       }
 
-      .img-grid img {
+      .img-grid img, .detail-content img.zoomable {
         width: 100%;
-        height: auto;
+        height: 100%;
         object-fit: cover;
-        border-radius: 8px;
+        border-radius: 10px;
         display: block;
+        cursor: zoom-in;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+      
+      .detail-content img.zoomable:not(.img-grid img) {
+        max-height: 300px;
+        object-fit: contain;
+        background: #fff;
+      }
+
+      .img-grid img:hover, .detail-content img.zoomable:hover {
+        transform: scale(1.02);
+        box-shadow: var(--shadow-soft);
       }
 
       @media screen and (max-width: 640px) {
-        .img-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
+        .img-grid { grid-template-columns: repeat(2, 1fr); }
+        .info-grid { grid-template-columns: 1fr; gap: 10px;}
+        .card-summary { flex-direction: column; padding: 16px; }
+        .card-time { margin-bottom: 8px; }
+        .card-toggle-icon { top: 16px; right: 16px; }
       }
 
-      /* 單張圖片（非格線）完整顯示，避免被裁切 */
-      .detail-content img.zoomable {
-        width: 100%;
-        height: auto;
-        display: block;
-        object-fit: contain;
-        border-radius: 8px;
-        margin-top: 12px;
-      }
-
-      /* Lightbox 圖片預覽 */
+      /* Lightbox 樣式保留原本的設定 */
       .lightbox {
         position: fixed;
         inset: 0;
@@ -285,10 +384,11 @@
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
         z-index: 9999;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.2s ease;
+        transition: opacity 0.3s ease;
       }
 
       .lightbox.open {
@@ -299,8 +399,8 @@
       .lightbox-img {
         max-width: 92%;
         max-height: 92%;
-        border-radius: 10px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        border-radius: 12px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         display: block;
       }
 
@@ -308,104 +408,36 @@
         position: fixed;
         top: 20px;
         right: 24px;
-        background: transparent;
+        background: rgba(255,255,255,0.1);
         border: none;
         color: #fff;
-        font-size: 32px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
         z-index: 10000;
+        transition: background 0.2s;
       }
-
-      /* 手機 RWD 極致優化 */
-      @media screen and (max-width: 480px) {
-        .card-summary {
-          flex-direction: column; /* 螢幕極小時，時間與標題上下排列 */
-        }
-        .card-time {
-          margin-bottom: 6px;
-          color: #3b82f6; /* 時間改用藍色突顯 */
-        }
-        .card-toggle-icon {
-          top: 15px;
-        }
-      }
-
-      /* --- 額外動畫效果 --- */
-      /* 全域平滑過渡（切換主題或顏色時） */
-      body,
-      .itinerary-container,
-      .itinerary-header,
-      .tab-btn,
-      .timeline-card,
-      .detail-content {
-        transition:
-          background-color 0.32s ease,
-          color 0.32s ease,
-          box-shadow 0.32s ease,
-          border-color 0.32s ease;
-      }
-
-      /* 卡片懸浮與入場 */
-      .timeline-card {
-        transform: translateY(0);
-      }
-      .timeline-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
-      }
-
-      /* 詳細內容淡入（在 .timeline-card.open 時觸發） */
-      .detail-content {
-        opacity: 0;
-        transform: translateY(6px);
-        transition:
-          opacity 0.28s ease,
-          transform 0.28s ease;
-      }
-      .timeline-card.open .detail-content {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* 圖片輕微放大效果 */
-      .img-grid img,
-      .detail-content img.zoomable {
-        transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease;
-      }
-      .img-grid img:hover,
-      .detail-content img.zoomable:hover {
-        transform: scale(1.03);
-        box-shadow: 0 12px 32px rgba(2, 6, 23, 0.08);
-      }
-
-      /* 主題切換淡入（若使用 .dark-mode） */
-      .dark-mode .itinerary-container,
-      .dark-mode body {
-        transition:
-          background-color 0.35s ease,
-          color 0.35s ease;
+      .lightbox-close:hover {
+        background: rgba(255,255,255,0.2);
       }
     </style>
   </head>
   <body>
     <div class="itinerary-container">
-      <h2 class="itinerary-header">2026東京豪神遊 ✈️</h2>
+      <h2 class="itinerary-header">
+        2026 東京豪神遊 <span class="material-symbols-outlined">flight_takeoff</span>
+      </h2>
 
       <div class="tabs">
-        <button class="tab-btn day1 active" onclick="openDay(event, 'day1')">
-          6/17 (三)
-        </button>
-        <button class="tab-btn day2" onclick="openDay(event, 'day2')">
-          6/18 (四)
-        </button>
-        <button class="tab-btn day3" onclick="openDay(event, 'day3')">
-          6/19 (五)
-        </button>
-        <button class="tab-btn day4" onclick="openDay(event, 'day4')">
-          6/20 (六)
-        </button>
+        <button class="tab-btn active" onclick="openDay(event, 'day1')">6/17 (三)</button>
+        <button class="tab-btn" onclick="openDay(event, 'day2')">6/18 (四)</button>
+        <button class="tab-btn" onclick="openDay(event, 'day3')">6/19 (五)</button>
+        <button class="tab-btn" onclick="openDay(event, 'day4')">6/20 (六)</button>
       </div>
 
       <div id="day1" class="tab-content active">
@@ -414,12 +446,19 @@
             <div class="card-time">7:30~9:00</div>
             <div class="card-info">
               <div class="card-title">自行前前往桃機T1</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">晟:高鐵 豪:家人載</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">桃園</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">桃園國際機場 第一航廈</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">7:30 ~ 9:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">晟: 高鐵 / 豪: 家人載</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -428,14 +467,21 @@
             <div class="card-time">9:00~10:40</div>
             <div class="card-info">
               <div class="card-title">航廈報到 (樂桃航空MM626)</div>
-              <div class="card-remark">個人行李7公斤/托運20公斤</div>
+              <div class="card-remark-badge">個人行李7公斤/托運20公斤</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
             <div class="detail-content">
-              （預留詳細說明區塊：報到櫃台、護照準備等...）
-              <img class="zoomable" src="./img1.png" alt="img1" />
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">桃園機場</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">報到櫃台</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">9:00 ~ 10:40</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">樂桃航空 MM626</span></div>
+              </div>
+              <div class="extra-notes">（預留詳細說明區塊：報到櫃台、護照準備等...）</div>
+              <img class="zoomable" src="./img1.png" alt="報到資訊" />
             </div>
           </div>
         </div>
@@ -445,12 +491,21 @@
             <div class="card-time">10:50~15:30</div>
             <div class="card-info">
               <div class="card-title">起駕日本東京成田機場</div>
-              <div class="card-remark">機上口爆</div>
+              <div class="card-remark-badge">機上口爆</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">飛機上睡搞搞</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">空中</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">飛機上</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">10:50 ~ 15:30</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">飛行中</span></div>
+              </div>
+              <div class="extra-notes">飛機上睡搞搞</div>
+            </div>
           </div>
         </div>
 
@@ -459,16 +514,22 @@
             <div class="card-time">15:30~16:00</div>
             <div class="card-info">
               <div class="card-title">入境安檢/檢疫</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
             <div class="detail-content">
-              啟用esim
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">成田機場</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">機場入境大廳</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">15:30 ~ 16:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">步行</span></div>
+              </div>
+              <div class="extra-notes">啟用 esim</div>
               <div class="img-grid">
-                <img class="zoomable" src="./vjw1.jpg" alt="vjw1" />
-                <img class="zoomable" src="./vjw2.jpg" alt="vjw2" />
+                <img class="zoomable" src="./vjw1.jpg" alt="VJW1" />
+                <img class="zoomable" src="./vjw2.jpg" alt="VJW2" />
               </div>
             </div>
           </div>
@@ -479,12 +540,19 @@
             <div class="card-time">16:00~17:00</div>
             <div class="card-info">
               <div class="card-title">飯店放行李</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">飯店名稱:遠東村飯店東京-淺草</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">淺草</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">遠東村飯店東京-淺草</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">16:00 ~ 17:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">機場交通</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -493,14 +561,21 @@
             <div class="card-time">17:00~18:00</div>
             <div class="card-info">
               <div class="card-title">前往吃晚餐</div>
-              <div class="card-remark">
-                搭乘skyliner轉橘色銀座線 / 搭車約30分
-              </div>
+              <div class="card-remark-badge">搭乘skyliner轉橘色銀座線 / 搭車約30分</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">淺草 ➔ 銀座</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">市區移動</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">17:00 ~ 18:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">skyliner 轉橘色銀座線</span></div>
+              </div>
+              <div class="extra-notes">（預留詳細說明區塊）</div>
+            </div>
           </div>
         </div>
 
@@ -509,12 +584,20 @@
             <div class="card-time">18:00~20:30</div>
             <div class="card-info">
               <div class="card-title">敘敘苑銀座三越店</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">晟訂:18.00 豪訂:18.30</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">銀座</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">敘敘苑 (晚餐)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">18:00 ~ 20:30</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">步行</span></div>
+              </div>
+              <div class="extra-notes">晟訂:18:00 / 豪訂:18:30</div>
+            </div>
           </div>
         </div>
 
@@ -522,14 +605,21 @@
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">20:30~21:30</div>
             <div class="card-info">
-              <div class="card-title">鬼混</div>
-              <div class="card-remark">Uniqlo/GU 百貨商場</div>
+              <div class="card-title">鬼混 (購物)</div>
+              <div class="card-remark-badge">Uniqlo/GU 百貨商場</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
             <div class="detail-content">
-              （預留詳細說明區塊：購物清單等...）
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">銀座商圈</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">Uniqlo / GU</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">20:30 ~ 21:30</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">步行</span></div>
+              </div>
+              <div class="extra-notes">（預留詳細說明區塊：購物清單等...）</div>
             </div>
           </div>
         </div>
@@ -539,12 +629,21 @@
             <div class="card-time">22:00~</div>
             <div class="card-info">
               <div class="card-title">飯店休息</div>
-              <div class="card-remark">賦歸 (王已歸)</div>
+              <div class="card-remark-badge">賦歸 (王已歸)</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/17 (三)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">淺草</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">遠東村飯店東京-淺草</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">22:00 之後</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">大眾運輸回程</span></div>
+              </div>
+              <div class="extra-notes">（預留詳細說明區塊）</div>
+            </div>
           </div>
         </div>
       </div>
@@ -555,12 +654,20 @@
             <div class="card-time">7:00~8:00</div>
             <div class="card-info">
               <div class="card-title">前往東京車站丸之內北口 (JR)</div>
-              <div class="card-remark">約半小時</div>
+              <div class="card-remark-badge">約半小時</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/18 (四)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">淺草 ➔ 東京車站</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">丸之內北口</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">7:00 ~ 8:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">大眾運輸</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -569,13 +676,19 @@
             <div class="card-time">8:00~18:00</div>
             <div class="card-info">
               <div class="card-title">富士山一日遊</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
             <div class="detail-content">
-              （預留詳細說明區塊：景點清單等...）
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/18 (四)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">富士山周邊</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">富士山各景點</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">8:00 ~ 18:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">一日遊專車</span></div>
+              </div>
+              <div class="extra-notes">（預留詳細說明區塊：景點清單等...）</div>
               <div class="img-grid">
                 <img class="zoomable" src="./img2.png" alt="img2" />
                 <img class="zoomable" src="./img3.png" alt="img3" />
@@ -591,12 +704,19 @@
             <div class="card-time">18:00~20:00</div>
             <div class="card-info">
               <div class="card-title">晚餐</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/18 (四)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">東京市區</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">晚餐安排</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">18:00 ~ 20:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">-</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -605,12 +725,19 @@
             <div class="card-time">20:00~</div>
             <div class="card-info">
               <div class="card-title">飯店休息</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/18 (四)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">淺草</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">遠東村飯店東京-淺草</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">20:00 之後</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">-</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -621,12 +748,20 @@
             <div class="card-time">9:00~12:00</div>
             <div class="card-info">
               <div class="card-title">淺草，逛雷門、淺草寺</div>
-              <div class="card-remark">仲見世通或周邊吃炸牛排、大福</div>
+              <div class="card-remark-badge">仲見世通或周邊吃炸牛排、大福</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/19 (五)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">淺草</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">雷門、淺草寺</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">9:00 ~ 12:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">步行</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -635,12 +770,19 @@
             <div class="card-time">12:00~14:00</div>
             <div class="card-info">
               <div class="card-title">隅田川步道/東京水岸街道(mizumachi)</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+               <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/19 (五)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">墨田區</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">隅田川步道 / mizumachi</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">12:00 ~ 14:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">步行</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -649,12 +791,20 @@
             <div class="card-time">14:00~16:00</div>
             <div class="card-info">
               <div class="card-title">前往晴空塔</div>
-              <div class="card-remark">吉卜力/寶可夢/卡通專賣店</div>
+              <div class="card-remark-badge">吉卜力/寶可夢/卡通專賣店</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/19 (五)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">墨田區</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">東京晴空塔</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">14:00 ~ 16:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">步行</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -663,12 +813,20 @@
             <div class="card-time">16:00~17:30</div>
             <div class="card-info">
               <div class="card-title">前往棒球場＋買晚餐</div>
-              <div class="card-remark">坐車約30分鐘</div>
+              <div class="card-remark-badge">坐車約30分鐘</div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">地點東京巨蛋</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/19 (五)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">後樂園 / 水道橋</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">東京巨蛋周邊</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">16:00 ~ 17:30</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">大眾運輸 (約30分)</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -677,12 +835,20 @@
             <div class="card-time">18:00~21:00</div>
             <div class="card-info">
               <div class="card-title">棒球比賽</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">讀賣巨人vs中日龍 票卷在apple pay</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/19 (五)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">後樂園</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">東京巨蛋</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">18:00 ~ 21:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">步行</span></div>
+              </div>
+              <div class="extra-notes">讀賣巨人 vs 中日龍 (票卷在 Apple Pay)</div>
+            </div>
           </div>
         </div>
       </div>
@@ -693,12 +859,19 @@
             <div class="card-time">9:00~12:00</div>
             <div class="card-info">
               <div class="card-title">築地市場</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/20 (六)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">築地</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">築地市場</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">9:00 ~ 12:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">大眾運輸</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -707,12 +880,19 @@
             <div class="card-time">12:00~15:00</div>
             <div class="card-info">
               <div class="card-title">購物</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/20 (六)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">東京市區</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">最後採買</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">12:00 ~ 15:00</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">-</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -721,67 +901,64 @@
             <div class="card-time">15:00~</div>
             <div class="card-info">
               <div class="card-title">前往機場</div>
-              <div class="card-remark"></div>
             </div>
-            <div class="card-toggle-icon">▼</div>
+            <div class="card-toggle-icon"><span class="material-symbols-outlined">expand_more</span></div>
           </div>
           <div class="card-detail">
-            <div class="detail-content">（預留詳細說明區塊）</div>
+            <div class="detail-content">
+              <div class="info-grid">
+                <div class="info-item"><span class="material-symbols-outlined">calendar_today</span><span class="info-label">日期:</span><span class="info-value">6/20 (六)</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">location_on</span><span class="info-label">地區:</span><span class="info-value">成田</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">tour</span><span class="info-label">景點:</span><span class="info-value">成田機場</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">schedule</span><span class="info-label">時間:</span><span class="info-value">15:00 之後</span></div>
+                <div class="info-item"><span class="material-symbols-outlined">directions_transit</span><span class="info-label">交通:</span><span class="info-value">機場快線</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div id="lightbox" class="lightbox" aria-hidden="true">
-      <button class="lightbox-close" aria-label="Close">×</button>
+      <button class="lightbox-close" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
       <img class="lightbox-img" src="" alt="" />
     </div>
 
     <script>
       // 頁籤切換功能
       function openDay(evt, dayId) {
-        // 隱藏所有 tab-content
         let tabContents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < tabContents.length; i++) {
           tabContents[i].style.display = "none";
           tabContents[i].classList.remove("active");
         }
 
-        // 移除所有 tab-btn 的 active 狀態
         let tabBtns = document.getElementsByClassName("tab-btn");
         for (let i = 0; i < tabBtns.length; i++) {
           tabBtns[i].classList.remove("active");
         }
 
-        // 顯示被點擊的行程並加上 active 狀態
         document.getElementById(dayId).style.display = "block";
-        // 使用 setTimeout 確保 display: block 渲染後才加上 active 觸發動畫
         setTimeout(() => {
           document.getElementById(dayId).classList.add("active");
         }, 10);
         evt.currentTarget.classList.add("active");
       }
 
-      // 關閉所有已開啟的卡片（僅移除類別，外觀由 CSS 控制）
       function closeAllCards() {
         let openCards = document.querySelectorAll(".timeline-card.open");
         openCards.forEach((openCard) => openCard.classList.remove("open"));
       }
 
-      // 卡片下拉說明展開/收合功能
       function toggleCard(summaryElement) {
-        // 找到包裹 summary 的外層卡片 (.timeline-card)
         let card = summaryElement.parentElement;
-        // 找到同層的 detail 區塊 (.card-detail)
         let detail = card.querySelector(".card-detail");
-
-        // 自動關閉其他已開啟的卡片（保留目前卡片）
         let openCards = document.querySelectorAll(".timeline-card.open");
+        
         openCards.forEach((openCard) => {
           if (openCard !== card) openCard.classList.remove("open");
         });
 
-        // 切換目前卡片展開類別，CSS 負責動畫與顯示
         card.classList.toggle("open");
       }
 
@@ -792,14 +969,13 @@
         }
       });
 
-      // 防止點擊卡片內部冒泡導致關閉（包含 summary 與 detail）
       document.querySelectorAll(".card-summary, .card-detail").forEach((el) => {
         el.addEventListener("click", function (event) {
           event.stopPropagation();
         });
       });
 
-      // Lightbox: 點擊圖片放大預覽
+      // Lightbox 邏輯
       const lightbox = document.getElementById("lightbox");
       const lightboxImg = lightbox.querySelector(".lightbox-img");
 
@@ -815,39 +991,23 @@
         document.body.style.overflow = "";
         setTimeout(() => {
           lightboxImg.src = "";
-        }, 200);
+        }, 300);
       }
 
-      // 綁定縮圖
       document.querySelectorAll(".zoomable").forEach((img) => {
-        img.style.cursor = "zoom-in";
         img.addEventListener("click", function (e) {
           openLightbox(img.src, img.alt);
           e.stopPropagation();
         });
       });
 
-      // 點擊背景或關閉按鈕關閉（阻止事件冒泡，避免觸發 document 的外部點擊處理）
       lightbox.addEventListener("click", function (e) {
-        if (
-          e.target === lightbox ||
-          e.target.classList.contains("lightbox-close")
-        ) {
+        if (e.target === lightbox || e.target.closest(".lightbox-close")) {
           e.stopPropagation();
           closeLightbox();
         }
       });
 
-      // 另外保險：關閉按鈕的 click 也阻止冒泡
-      const lightboxCloseBtn = lightbox.querySelector(".lightbox-close");
-      if (lightboxCloseBtn) {
-        lightboxCloseBtn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          closeLightbox();
-        });
-      }
-
-      // Esc 鍵關閉
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && lightbox.classList.contains("open")) {
           e.stopPropagation();
