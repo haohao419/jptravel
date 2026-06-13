@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東京四日遊自助旅遊行程</title>
+    <style>
+        /* CSS 樣式區塊 */
+        .itinerary-container {
+            font-family: 'Helvetica Neue', Helvetica, Arial, '微軟正黑體', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .itinerary-header {
+            background: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 10px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #495057;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .tab-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        /* 根據圖片中的顏色設定 Tab 提示色 */
+        .tab-btn.active.day1 { border-bottom: 4px solid #f4d03f; color: #000; } /* 黃色 */
+        .tab-btn.active.day2 { border-bottom: 4px solid #2ecc71; color: #000; } /* 綠色 */
+        .tab-btn.active.day3 { border-bottom: 4px solid #00ffff; color: #000; } /* 青藍色 */
+        .tab-btn.active.day4 { border-bottom: 4px solid #e74c3c; color: #000; } /* 紅色 */
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        /* 欄位寬度設定 */
+        .col-time { width: 20%; }
+        .col-event { width: 45%; }
+        .col-remark { width: 35%; }
+
+        /* 手機版優化 */
+        @media screen and (max-width: 600px) {
+            .tab-btn { font-size: 14px; padding: 10px 5px; }
+            table, thead, tbody, th, td, tr { display: block; }
+            th { display: none; }
+            td { position: relative; padding-left: 30%; border-bottom: none; }
+            td:last-child { border-bottom: 1px solid #dee2e6; margin-bottom: 15px; }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 25%;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="itinerary-container">
+    <h2 class="itinerary-header">東京四日遊行程表</h2>
+    
+    <!-- 頁籤按鈕區塊 -->
+    <div class="tabs">
+        <button class="tab-btn day1 active" onclick="openDay(event, 'day1')">6/17 (四)</button>
+        <button class="tab-btn day2" onclick="openDay(event, 'day2')">6/18 (五)</button>
+        <button class="tab-btn day3" onclick="openDay(event, 'day3')">6/19 (六)</button>
+        <button class="tab-btn day4" onclick="openDay(event, 'day4')">6/20 (日)</button>
+    </div>
+
+    <!-- Day 1 行程 -->
+    <div id="day1" class="tab-content active">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-time">時間</th>
+                    <th class="col-event">行程</th>
+                    <th class="col-remark">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="時間">7:30~9:00</td>
+                    <td data-label="行程">自行前前往桃機T1</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">9:00~10:40</td>
+                    <td data-label="行程">航廈報到 (樂桃航空MM626)</td>
+                    <td data-label="Remark">個人行李7公斤/托運20公斤</td>
+                </tr>
+                <tr>
+                    <td data-label="時間">10:50~15:30</td>
+                    <td data-label="行程">起駕日本東京成田機場</td>
+                    <td data-label="Remark">機上口爆</td>
+                </tr>
+                <tr>
+                    <td data-label="時間">15:30~16:00</td>
+                    <td data-label="行程">入境安檢/檢疫</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">16:00~17:00</td>
+                    <td data-label="行程">飯店放行李(遠東村飯店東京-淺草)</td>
+                    <td data-label="Remark">搭乘skyliner轉橘色銀座線</td>
+                </tr>
+                <tr>
+                    <td data-label="時間">17:00~18:00</td>
+                    <td data-label="行程">前往吃晚餐</td>
+                    <td data-label="Remark">搭車約30分</td>
+                </tr>
+                <tr>
+                    <td data-label="時間">18:00~20:30</td>
+                    <td data-label="行程">敘敘苑銀座三越店</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">20:30~21:30</td>
+                    <td data-label="行程">鬼混</td>
+                    <td data-label="Remark">Uniqlo/GU 百貨商場</td>
+                </tr>
+                <tr>
+                    <td data-label="時間">22:00~</td>
+                    <td data-label="行程">飯店休息</td>
+                    <td data-label="Remark">賦歸 (王已歸)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Day 2 行程 -->
+    <div id="day2" class="tab-content">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-time">時間</th>
+                    <th class="col-event">行程</th>
+                    <th class="col-remark">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="時間">7:00~8:00</td>
+                    <td data-label="行程">前往東京車站丸之內北口 (JR)</td>
+                    <td data-label="Remark">約半小時</td>
+                </tr>
+                <tr>
+                    <td data-label="時間">8:00~18:00</td>
+                    <td data-label="行程">富士山一日遊</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">18:00~20:00</td>
+                    <td data-label="行程">晚餐</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">20:00~</td>
+                    <td data-label="行程">飯店休息</td>
+                    <td data-label="Remark"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Day 3 行程 -->
+    <div id="day3" class="tab-content">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-time">時間</th>
+                    <th class="col-event">行程</th>
+                    <th class="col-remark">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="時間">9:00~12:00</td>
+                    <td data-label="行程">晴空塔</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">12:00~13:30</td>
+                    <td data-label="行程">午餐</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">13:30~18:00</td>
+                    <td data-label="行程">下午行程</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">18:00~21:00</td>
+                    <td data-label="行程">棒球比賽</td>
+                    <td data-label="Remark"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Day 4 行程 -->
+    <div id="day4" class="tab-content">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-time">時間</th>
+                    <th class="col-event">行程</th>
+                    <th class="col-remark">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="時間">9:00~12:00</td>
+                    <td data-label="行程">築地市場</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">12:00~15:00</td>
+                    <td data-label="行程">購物</td>
+                    <td data-label="Remark"></td>
+                </tr>
+                <tr>
+                    <td data-label="時間">15:00~</td>
+                    <td data-label="行程">前往機場</td>
+                    <td data-label="Remark"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- JavaScript 區塊 -->
+<script>
+    function openDay(evt, dayId) {
+        // 隱藏所有 tab-content
+        let tabContents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContents.length; i++) {
+            tabContents[i].style.display = "none";
+            tabContents[i].classList.remove("active");
+        }
+
+        // 移除所有 tab-btn 的 active 狀態
+        let tabBtns = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < tabBtns.length; i++) {
+            tabBtns[i].classList.remove("active");
+        }
+
+        // 顯示被點擊的行程並加上 active 狀態
+        document.getElementById(dayId).style.display = "block";
+        document.getElementById(dayId).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
