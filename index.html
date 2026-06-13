@@ -7,6 +7,7 @@
     <link rel="apple-touch-icon" href="./icon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="./icon.png" />
     <title>2026東京豪神遊</title>
+    <!-- 引入 Google Fonts: Noto Sans TC (日系極簡字體) 與 Material Symbols -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,9 +15,12 @@
     
     <style>
       :root {
-        /* 色彩計畫 - 日系極簡 / Apple / Google 質感 */
+        /* 色彩計畫 (淺色模式) - 日系極簡 / Apple / Google 質感 */
         --bg-body: #F5F5F7;        /* 淺灰背景 */
         --bg-card: #FFFFFF;        /* 純白卡片 */
+        --bg-detail: #FAFAFC;      /* 卡片展開內容底色 */
+        --bg-badge: #F2F2F7;       /* 標籤底色 */
+        --bg-hover: #E9E9EB;       /* 按鈕懸浮底色 */
         --text-main: #1D1D1F;      /* 深灰主文字 */
         --text-muted: #86868B;     /* 次要文字 */
         --tokyo-red: #E50012;      /* 東京紅 (強調色) */
@@ -24,6 +28,21 @@
         --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.04);
         --shadow-hover: 0 10px 32px rgba(0, 0, 0, 0.08);
         --radius-card: 16px;
+      }
+
+      /* 深色模式變數覆蓋 */
+      [data-theme="dark"] {
+        --bg-body: #000000;        /* 純黑背景 */
+        --bg-card: #1C1C1E;        /* 深灰卡片 */
+        --bg-detail: #242426;      /* 卡片展開內容底色 */
+        --bg-badge: #2C2C2E;       /* 標籤底色 */
+        --bg-hover: #3A3A3C;       /* 按鈕懸浮底色 */
+        --text-main: #F5F5F7;      /* 淺色主文字 */
+        --text-muted: #A1A1A6;     /* 次要文字 */
+        --tokyo-red: #FF453A;      /* 東京紅 (針對深色背景的高對比紅) */
+        --border-light: #38383A;   /* 深色邊框 */
+        --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.4);
+        --shadow-hover: 0 10px 32px rgba(0, 0, 0, 0.6);
       }
 
       * {
@@ -37,6 +56,7 @@
         font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         color: var(--text-main);
         -webkit-font-smoothing: antialiased;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       /* 主容器 */
@@ -47,26 +67,60 @@
         border-radius: 24px;
         box-shadow: var(--shadow-soft);
         overflow: hidden;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
       }
 
-      /* 頂部標題 */
+      /* 頂部標題與控制列 */
       .itinerary-header {
         background: var(--bg-card);
-        color: var(--text-main);
-        padding: 32px 20px 20px;
-        text-align: center;
-        margin: 0;
+        padding: 24px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border-bottom: 1px solid var(--border-light);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .header-title {
         font-size: 24px;
         font-weight: 700;
         letter-spacing: 1px;
-        border-bottom: 1px solid var(--border-light);
+        display: flex;
+        align-items: center;
+        color: var(--text-main);
+        transition: color 0.3s ease;
       }
       
-      .itinerary-header span.material-symbols-outlined {
+      .header-title span.material-symbols-outlined {
         color: var(--tokyo-red);
-        vertical-align: middle;
         margin-left: 8px;
         font-size: 28px;
+        transition: color 0.3s ease;
+      }
+
+      /* 深淺色切換按鈕 */
+      .theme-toggle {
+        position: absolute;
+        right: 20px;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease, color 0.3s ease;
+      }
+
+      .theme-toggle:hover {
+        background-color: var(--bg-hover);
+      }
+
+      .theme-toggle span {
+        font-size: 24px;
       }
 
       /* 頁籤設計 - 乾淨留白 */
@@ -77,6 +131,7 @@
         overflow-x: auto;
         white-space: nowrap;
         scrollbar-width: none; /* Firefox */
+        transition: background-color 0.3s ease, border-color 0.3s ease;
       }
       .tabs::-webkit-scrollbar {
         display: none; /* Safari and Chrome */
@@ -91,7 +146,7 @@
         font-size: 15px;
         font-weight: 500;
         color: var(--text-muted);
-        transition: all 0.3s ease;
+        transition: color 0.3s ease;
         outline: none;
         min-width: 85px;
         position: relative;
@@ -118,7 +173,7 @@
         height: 3px;
         background-color: var(--tokyo-red);
         border-radius: 3px 3px 0 0;
-        transition: width 0.3s ease;
+        transition: width 0.3s ease, background-color 0.3s ease;
       }
 
       .tab-btn.active::after {
@@ -129,9 +184,10 @@
       .tab-content {
         display: none;
         padding: 32px 24px;
-        background-color: var(--bg-body); /* 內部使用灰色背景讓白卡片浮現 */
+        background-color: var(--bg-body); 
         animation: fadeIn 0.4s ease-out;
         position: relative;
+        transition: background-color 0.3s ease;
       }
 
       .tab-content.active {
@@ -153,6 +209,7 @@
         width: 2px;
         background-color: var(--border-light);
         z-index: 0;
+        transition: background-color 0.3s ease;
       }
 
       @media screen and (max-width: 640px) {
@@ -168,9 +225,9 @@
         margin-bottom: 20px;
         margin-left: 40px;
         position: relative;
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
         z-index: 1;
-        border: 1px solid rgba(0,0,0,0.02);
+        border: 1px solid var(--border-light); /* 改用變數讓深淺色更好切換 */
       }
 
       .timeline-card:hover {
@@ -190,7 +247,7 @@
         background-color: var(--bg-card);
         border: 3px solid var(--border-light);
         z-index: 2;
-        transition: border-color 0.3s ease;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
       }
 
       .timeline-card:hover::before,
@@ -219,6 +276,7 @@
         margin-right: 16px;
         font-size: 15px;
         padding-top: 2px;
+        transition: color 0.3s ease;
       }
 
       .card-info {
@@ -232,6 +290,7 @@
         color: var(--text-main);
         margin-bottom: 6px;
         line-height: 1.4;
+        transition: color 0.3s ease;
       }
 
       .card-remark-badge {
@@ -239,11 +298,12 @@
         color: var(--text-muted);
         display: inline-flex;
         align-items: center;
-        background: #F2F2F7;
+        background: var(--bg-badge);
         padding: 4px 10px;
         border-radius: 12px;
         margin-top: 4px;
         font-weight: 500;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       .card-remark-badge:empty {
@@ -255,7 +315,7 @@
         right: 20px;
         top: 22px;
         color: var(--text-muted);
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, color 0.3s ease;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -271,9 +331,9 @@
         max-height: 0;
         overflow: hidden;
         padding: 0 20px;
-        background-color: #FAFAFC;
+        background-color: var(--bg-detail);
         border-radius: 0 0 var(--radius-card) var(--radius-card);
-        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease, background-color 0.3s ease, border-color 0.3s ease;
         border-top: 1px solid transparent;
       }
 
@@ -289,7 +349,7 @@
         line-height: 1.6;
         opacity: 0;
         transform: translateY(10px);
-        transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+        transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s, color 0.3s ease;
       }
 
       .timeline-card.open .detail-content {
@@ -307,6 +367,7 @@
         padding: 16px;
         border-radius: 12px;
         border: 1px solid var(--border-light);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
       }
 
       .info-item {
@@ -320,23 +381,27 @@
         font-size: 18px;
         color: var(--text-muted);
         margin-top: 2px;
+        transition: color 0.3s ease;
       }
 
       .info-label {
         color: var(--text-muted);
         margin-right: 4px;
+        transition: color 0.3s ease;
       }
 
       .info-value {
         color: var(--text-main);
         font-weight: 500;
         flex: 1;
+        transition: color 0.3s ease;
       }
 
       /* 補充內容與圖片區 */
       .extra-notes {
         color: var(--text-muted);
         margin-bottom: 12px;
+        transition: color 0.3s ease;
       }
 
       .img-grid {
@@ -354,13 +419,13 @@
         display: block;
         cursor: zoom-in;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid var(--border-light);
       }
       
       .detail-content img.zoomable:not(.img-grid img) {
         max-height: 300px;
         object-fit: contain;
-        background: #fff;
+        background: #fff; /* 確保去背圖在深色模式下還是看得見 */
       }
 
       .img-grid img:hover, .detail-content img.zoomable:hover {
@@ -374,9 +439,10 @@
         .card-summary { flex-direction: column; padding: 16px; }
         .card-time { margin-bottom: 8px; }
         .card-toggle-icon { top: 16px; right: 16px; }
+        .theme-toggle { right: 12px; }
       }
 
-      /* Lightbox 樣式保留原本的設定 */
+      /* Lightbox 樣式 */
       .lightbox {
         position: fixed;
         inset: 0;
@@ -429,10 +495,17 @@
   </head>
   <body>
     <div class="itinerary-container">
-      <h2 class="itinerary-header">
-        2026 東京豪神遊 <span class="material-symbols-outlined">flight_takeoff</span>
-      </h2>
+      <div class="itinerary-header">
+        <div class="header-title">
+          2026 東京豪神遊 <span class="material-symbols-outlined">flight_takeoff</span>
+        </div>
+        <!-- 深淺色切換按鈕 -->
+        <button class="theme-toggle" id="themeToggle" aria-label="切換深淺色模式">
+          <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
+        </button>
+      </div>
 
+      <!-- 頁籤區塊 -->
       <div class="tabs">
         <button class="tab-btn active" onclick="openDay(event, 'day1')">6/17 (三)</button>
         <button class="tab-btn" onclick="openDay(event, 'day2')">6/18 (四)</button>
@@ -440,7 +513,9 @@
         <button class="tab-btn" onclick="openDay(event, 'day4')">6/20 (六)</button>
       </div>
 
+      <!-- 第一天 -->
       <div id="day1" class="tab-content active">
+        <!-- 卡片 1 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">7:30~9:00</div>
@@ -462,6 +537,7 @@
           </div>
         </div>
 
+        <!-- 卡片 2 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">9:00~10:40</div>
@@ -486,6 +562,7 @@
           </div>
         </div>
 
+        <!-- 卡片 3 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">10:50~15:30</div>
@@ -509,6 +586,7 @@
           </div>
         </div>
 
+        <!-- 卡片 4 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">15:30~16:00</div>
@@ -535,6 +613,7 @@
           </div>
         </div>
 
+        <!-- 卡片 5 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">16:00~17:00</div>
@@ -556,6 +635,7 @@
           </div>
         </div>
 
+        <!-- 卡片 6 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">17:00~18:00</div>
@@ -579,6 +659,7 @@
           </div>
         </div>
 
+        <!-- 卡片 7 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">18:00~20:30</div>
@@ -601,6 +682,7 @@
           </div>
         </div>
 
+        <!-- 卡片 8 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">20:30~21:30</div>
@@ -624,6 +706,7 @@
           </div>
         </div>
 
+        <!-- 卡片 9 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">22:00~</div>
@@ -648,7 +731,9 @@
         </div>
       </div>
 
+      <!-- 第二天 -->
       <div id="day2" class="tab-content">
+        <!-- 卡片 1 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">7:00~8:00</div>
@@ -671,6 +756,7 @@
           </div>
         </div>
 
+        <!-- 卡片 2 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">8:00~18:00</div>
@@ -699,6 +785,7 @@
           </div>
         </div>
 
+        <!-- 卡片 3 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">18:00~20:00</div>
@@ -720,6 +807,7 @@
           </div>
         </div>
 
+        <!-- 卡片 4 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">20:00~</div>
@@ -742,7 +830,9 @@
         </div>
       </div>
 
+      <!-- 第三天 -->
       <div id="day3" class="tab-content">
+        <!-- 卡片 1 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">9:00~12:00</div>
@@ -765,6 +855,7 @@
           </div>
         </div>
 
+        <!-- 卡片 2 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">12:00~14:00</div>
@@ -786,6 +877,7 @@
           </div>
         </div>
 
+        <!-- 卡片 3 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">14:00~16:00</div>
@@ -808,6 +900,7 @@
           </div>
         </div>
 
+        <!-- 卡片 4 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">16:00~17:30</div>
@@ -830,6 +923,7 @@
           </div>
         </div>
 
+        <!-- 卡片 5 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">18:00~21:00</div>
@@ -853,7 +947,9 @@
         </div>
       </div>
 
+      <!-- 第四天 -->
       <div id="day4" class="tab-content">
+        <!-- 卡片 1 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">9:00~12:00</div>
@@ -875,6 +971,7 @@
           </div>
         </div>
 
+        <!-- 卡片 2 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">12:00~15:00</div>
@@ -896,6 +993,7 @@
           </div>
         </div>
 
+        <!-- 卡片 3 -->
         <div class="timeline-card">
           <div class="card-summary" onclick="toggleCard(this)">
             <div class="card-time">15:00~</div>
@@ -919,13 +1017,42 @@
       </div>
     </div>
 
+    <!-- Lightbox 圖片預覽 -->
     <div id="lightbox" class="lightbox" aria-hidden="true">
       <button class="lightbox-close" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
       <img class="lightbox-img" src="" alt="" />
     </div>
 
     <script>
-      // 頁籤切換功能
+      // === 深淺色模式切換邏輯 ===
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const htmlElement = document.documentElement;
+
+      // 初始化：檢查 localStorage 是否有儲存的設定
+      const savedTheme = localStorage.getItem('tokyo-trip-theme');
+      if (savedTheme === 'dark') {
+        htmlElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = 'light_mode';
+      } else {
+        themeIcon.textContent = 'dark_mode';
+      }
+
+      // 切換按鈕點擊事件
+      themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+          htmlElement.removeAttribute('data-theme');
+          themeIcon.textContent = 'dark_mode';
+          localStorage.setItem('tokyo-trip-theme', 'light');
+        } else {
+          htmlElement.setAttribute('data-theme', 'dark');
+          themeIcon.textContent = 'light_mode';
+          localStorage.setItem('tokyo-trip-theme', 'dark');
+        }
+      });
+
+      // === 頁籤切換功能 ===
       function openDay(evt, dayId) {
         let tabContents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < tabContents.length; i++) {
@@ -952,7 +1079,6 @@
 
       function toggleCard(summaryElement) {
         let card = summaryElement.parentElement;
-        let detail = card.querySelector(".card-detail");
         let openCards = document.querySelectorAll(".timeline-card.open");
         
         openCards.forEach((openCard) => {
@@ -975,7 +1101,7 @@
         });
       });
 
-      // Lightbox 邏輯
+      // === Lightbox 邏輯 ===
       const lightbox = document.getElementById("lightbox");
       const lightboxImg = lightbox.querySelector(".lightbox-img");
 
