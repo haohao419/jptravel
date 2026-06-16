@@ -112,7 +112,12 @@
         transition: color 0.3s ease;
       }
 
-      .header-title span.material-symbols-outlined {
+      .title-main {
+        display: flex;
+        align-items: center;
+      }
+
+      .title-main span.material-symbols-outlined {
         color: var(--tokyo-red);
         margin-left: 8px;
         font-size: 28px;
@@ -583,6 +588,26 @@
       }
 
       @media screen and (max-width: 640px) {
+        .itinerary-header {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 20px 60px 20px 16px;
+        }
+        .header-title {
+          font-weight: 700;
+          font-size: 20px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+          width: 100%;
+        }
+        .package-link {
+          margin-left: 0;
+        }
+        .theme-toggle {
+          top: 16px;
+          right: 16px;
+        }
         .img-grid {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -600,9 +625,6 @@
         .card-toggle-icon {
           top: 16px;
           right: 16px;
-        }
-        .theme-toggle {
-          right: 12px;
         }
       }
 
@@ -661,8 +683,10 @@
     <div class="itinerary-container">
       <div class="itinerary-header">
         <div class="header-title">
-          2026 東京豪神遊
-          <span class="material-symbols-outlined">flight_takeoff</span>
+          <div class="title-main">
+            2026 東京豪神遊
+            <span class="material-symbols-outlined">flight_takeoff</span>
+          </div>
           <a
             href="https://www.jiejourneys.com/"
             target="_blank"
