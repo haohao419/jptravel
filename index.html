@@ -119,6 +119,34 @@
         transition: color 0.3s ease;
       }
 
+      .package-link {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--tokyo-red);
+        text-decoration: none;
+        margin-left: 12px;
+        padding: 4px 10px;
+        border: 1px solid var(--tokyo-red);
+        border-radius: 20px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        line-height: 1;
+      }
+
+      .package-link:hover {
+        background-color: var(--tokyo-red);
+        color: #ffffff;
+      }
+
+      .package-link span.material-symbols-outlined {
+        font-size: 14px;
+        color: inherit;
+        transition: none;
+        margin-left: 0;
+      }
+
       /* 深淺色切換按鈕 */
       .theme-toggle {
         position: absolute;
@@ -635,6 +663,15 @@
         <div class="header-title">
           2026 東京豪神遊
           <span class="material-symbols-outlined">flight_takeoff</span>
+          <a
+            href="https://www.jiejourneys.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="package-link"
+          >
+            點我看旅遊懶人包
+            <span class="material-symbols-outlined">open_in_new</span>
+          </a>
         </div>
         <!-- 深淺色切換按鈕 -->
         <button
@@ -902,7 +939,10 @@
             <div class="card-info">
               <div class="card-title">飯店放行李</div>
               <div class="card-remark-badge">
-                SKYLINER(成田機場第一航廈-京成上野) ➔ 橘色M銀座線(上野-田原町)
+                京成成田スカイアクセス線[西馬込行き アクセス特急][Nishi Magome方向 ACCESS特急](成田空港-浅草)
+              </div>
+              <div class="card-remark-badge">
+                SKYLINER(成田機場第一航廈-京成上野) ➔ 橘色銀座線(上野-田原町)
               </div>
             </div>
             <div class="card-toggle-icon">
@@ -940,7 +980,8 @@
                 </div>
               </div>
               <div class="extra-notes">
-                <p><strong>交通</strong>: SKYLINER(成田機場第一航廈-京成上野) ➔ 橘色M銀座線(上野-田原町)</p>
+                <p><strong>交通1</strong>: 京成成田スカイアクセス線[西馬込行き アクセス特急][Nishi Magome方向 ACCESS特急](成田空港-浅草)</p>
+                <p><strong>交通2</strong>: SKYLINER(成田機場第一航廈-京成上野) ➔ 橘色銀座線(上野-田原町)</p>              
                 <a
                   href="https://maps.app.goo.gl/mdUj32xpYftxmtwA6"
                   target="_blank"
@@ -949,6 +990,15 @@
                 >
                   <span class="material-symbols-outlined">location_on</span>
                   點我看飯店的 Google 地圖位置
+                </a>
+                <a
+                  href="https://keisei.ekitan.com/naritaacs/timetable"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="map-btn"
+                >
+                  <span class="material-symbols-outlined">location_on</span>
+                  點我看交通1的時刻表(京成電鐵ACCESS特急)[時間:16:04發車]
                 </a>
               </div>
             </div>
@@ -962,7 +1012,7 @@
             <div class="card-info">
               <div class="card-title">前往吃晚餐</div>
               <div class="card-remark-badge">
-                橘色M銀座線(田原町-銀座) / 搭車約30分
+                橘色銀座線(田原町-銀座) / 搭車約30分
               </div>
             </div>
             <div class="card-toggle-icon">
@@ -996,7 +1046,7 @@
                   <span class="material-symbols-outlined"
                     >directions_transit</span
                   ><span class="info-label">交通:</span
-                  ><span class="info-value">橘色M銀座線(田原町-銀座)</span>
+                  ><span class="info-value">橘色銀座線(田原町-銀座)</span>
                 </div>
               </div>
               <div class="extra-notes">
